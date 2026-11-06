@@ -68,9 +68,13 @@ Primer arranque verificado (2026‑11‑05): quantum 128 @ 48 kHz, ida y vuelta 
 
 | Buffer | Plugin | Ida y vuelta | Xruns (30 min) | Sobrecargas | CPU | Notas |
 |---|---|---|---|---|---|---|
-| 128 | TONE3000 (nativo) | | | | | |
-| 64  | TONE3000 (nativo) | | | | | |
-| 128 | (Windows vía yabridge) | | | | | |
+| 128 | TONE3000 (nativo, con modelo) | 8,00 ms (informada) | 0 (sesión corta) | 0 | 6,4 % | Tocando; suena bien |
+| 64  | TONE3000 (nativo) | | | | | Arrancó sin errores en PipeWire; sin medir |
+| 128 | (Windows vía yabridge) | | | | | No probado |
+
+**Cerrada el 2026‑11‑05.** El usuario dio por buena la Fase 0 sin la prueba de 30 min. Quedan como
+verificación pendiente, a retomar si aparecen problemas: la prueba larga, 64 muestras medidas, los
+ajustes RT del sistema y un plugin de Windows vía yabridge.
 
 **Ojo con la latencia mostrada**: es la que informa el driver (más la del plugin). La real incluye los
 conversores AD/DA de la interfaz (~1–2 ms extra). Para medirla de verdad: cable de la salida a la entrada

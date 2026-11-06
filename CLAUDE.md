@@ -26,6 +26,6 @@ presets con cadena de plugins VST3, snapshots, control MIDI. Ver `docs/PROPUESTA
 JUCE 8.0.15 vía FetchContent (`LINUXRIG_JUCE_TAG`).
 
 ## Estado / siguiente paso
-Fase 0 (`src/poc/`, ver `docs/FASE0.md`): implementada y arrancando con TONE3000 a 128 @ 48 kHz,
-8 ms informados, 0 xruns. Pendiente: prueba de 30 min tocando, 64 muestras, ajustes RT del sistema,
-y un plugin de Windows vía yabridge. Luego Fase 1 (MVP).
+Fase 0 (`src/poc/`, ver `docs/FASE0.md`): **cerrada**. TONE3000 a 128 @ 48 kHz, 8 ms informados,
+0 xruns, 6,4 % CPU. Sin prueba de 30 min (decisión del usuario); ajustes RT y yabridge sin probar.
+Siguiente: Fase 1 (MVP).
