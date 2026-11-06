@@ -22,10 +22,14 @@ presets con cadena de plugins VST3, snapshots, control MIDI. Ver `docs/PROPUESTA
 - Presets en JSON; snapshots = delta de bypass + parámetros sobre el preset.
 
 ## Compilar
-`cmake --preset release && cmake --build --preset release`; ejecutar con `scripts/run-poc.sh [buffer]`.
-JUCE 8.0.15 vía FetchContent (`LINUXRIG_JUCE_TAG`).
+`cmake --preset release && cmake --build --preset release`; tests con `ctest --preset release`
+(preset `debug` = ASan/UBSan); ejecutar con `scripts/run.sh [buffer]`.
+JUCE 8.0.15 vía FetchContent (`LINUXRIG_JUCE_TAG`). Estructura y archivos del usuario: `docs/FASE1.md`.
 
 ## Estado / siguiente paso
 Fase 0 (`src/poc/`, ver `docs/FASE0.md`): **cerrada**. TONE3000 a 128 @ 48 kHz, 8 ms informados,
 0 xruns, 6,4 % CPU. Sin prueba de 30 min (decisión del usuario); ajustes RT y yabridge sin probar.
-Siguiente: Fase 1 (MVP).
+
+Fase 1 (app `LinuxRig`, ver `docs/FASE1.md`): implementada — cadena de N slots, bypass con fundido,
+escáner fuera de proceso, editores, presets JSON y sesión automática. Verificado sin tocar (tests y
+ciclo cerrar/abrir); falta la prueba del usuario con modelos cargados. Luego Fase 2 (snapshots + MIDI).
