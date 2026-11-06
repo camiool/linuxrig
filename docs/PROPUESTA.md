@@ -133,7 +133,10 @@ igual que en las pedaleras de hardware: cambia rápido y no recarga nada.
 ## 7. Decisiones tomadas
 
 - **Interfaces de audio**: Focusrite Scarlett Solo y M-Audio M-Track 2x2M (ambas USB class-compliant, funcionan con ALSA/PipeWire sin drivers extra).
-- **Plugins**: TONE3000 y plugins propios. Pendiente: confirmar formato (VST3/LV2/CLAP) y si son nativos Linux o requieren yabridge.
+- **Plugins**:
+  - TONE3000: versión **Windows** → se usará vía **yabridge** (Wine).
+  - Plugins propios: VST3 compilados para macOS; hay que **recompilarlos para Linux** desde su código fuente (un `.vst3` de Mac no carga en Linux).
+  - Ruta de VST3 del usuario: `~/.vst3` (`/home/camilo/.vst3`); yabridge deja los suyos en `~/.vst3/yabridge`.
 - **Plataforma**: PC de escritorio ahora; mini‑PC táctil para tocar en vivo a futuro (la UI de escenario se diseña pensando en eso).
 - **Licencia**: open source (JUCE bajo AGPLv3).
 - **Distribución**: CachyOS (base Arch). Dependencias vía `pacman`; kernel de baja latencia disponible en sus repos.
