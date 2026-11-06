@@ -130,10 +130,15 @@ igual que en las pedaleras de hardware: cambia rápido y no recarga nada.
 
 ---
 
-## 7. Preguntas abiertas
+## 7. Decisiones tomadas
 
-1. ¿Qué interfaz de audio y qué controlador MIDI (pedalera) vas a usar?
-2. ¿Qué plugins usas hoy? ¿Alguno es solo de Windows (→ yabridge)?
-3. ¿Pantalla táctil / mini‑PC dedicado en el escenario, o laptop?
-4. ¿Proyecto open source (JUCE AGPL gratis) o cerrado (licencia JUCE comercial)?
-5. ¿Distribución Linux objetivo (Ubuntu, Fedora, Arch…)?
+- **Interfaces de audio**: Focusrite Scarlett Solo y M-Audio M-Track 2x2M (ambas USB class-compliant, funcionan con ALSA/PipeWire sin drivers extra).
+- **Plugins**: TONE3000 y plugins propios. Pendiente: confirmar formato (VST3/LV2/CLAP) y si son nativos Linux o requieren yabridge.
+- **Plataforma**: PC de escritorio ahora; mini‑PC táctil para tocar en vivo a futuro (la UI de escenario se diseña pensando en eso).
+- **Licencia**: open source (JUCE bajo AGPLv3).
+- **Distribución**: CachyOS (base Arch). Dependencias vía `pacman`; kernel de baja latencia disponible en sus repos.
+- **Entorno de desarrollo**: local, en el PC con CachyOS (ver motivo abajo).
+
+El desarrollo se hace en local porque un contenedor en la nube no tiene interfaz de audio, ni JACK/PipeWire en
+tiempo real, ni los plugins instalados, ni pantalla para la GUI: se podría compilar, pero no probar lo que importa
+(latencia, xruns, carga de plugins, sonido).
