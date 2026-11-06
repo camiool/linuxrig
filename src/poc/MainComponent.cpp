@@ -219,19 +219,70 @@ void MainComponent::rebuildInputList()
 }
 
 //==============================================================================
+// En Linux un .vst3 es una carpeta (bundle) y los diálogos de archivos entran en
+// ella en vez de seleccionarla. Por eso se ofrece la lista de bundles de las
+// rutas estándar y, para otras ubicaciones, se acepta cualquier archivo interno.
+static juce::Array<juce::File> findVst3Bundles()
+{
+    juce::Array<juce::File> bundles;
+
+    for (auto* path : { "~/.vst3", "~/.vst3/yabridge", "/usr/lib/vst3", "/usr/local/lib/vst3" })
+        for (auto& entry : juce::RangedDirectoryIterator (juce::File (path), false, "*.vst3",
+                                                          juce::File::findDirectories))
+            bundles.addIfNotAlreadyThere (entry.getFile());
+
+    return bundles;
+}
+
+static juce::File enclosingVst3Bundle (juce::File file)
+{
+    for (auto f = file; f != f.getParentDirectory(); f = f.getParentDirectory())
+        if (f.hasFileExtension ("vst3") && f.isDirectory())
+            return f;
+
+    return file;
+}
+
 void MainComponent::choosePlugin()
 {
-    chooser = std::make_unique<juce::FileChooser> ("Elegir plugin VST3",
-                                                   juce::File ("~/.vst3"), "*.vst3");
+    const auto bundles = findVst3Bundles();
+    const auto current = properties.getUserSettings()->getValue ("pluginPath");
 
-    // Un .vst3 en Linux es una carpeta (bundle), por eso se permite elegir directorios.
+    juce::PopupMenu menu;
+    menu.addSectionHeader ("Plugins VST3");
+
+    for (int i = 0; i < bundles.size(); ++i)
+        menu.addItem (i + 1, bundles[i].getFileNameWithoutExtension() + "   (" + bundles[i].getParentDirectory().getFullPathName() + ")",
+                      true, bundles[i].getFullPathName() == current);
+
+    if (bundles.isEmpty())
+        menu.addItem (-1, "(ninguno en ~/.vst3 ni /usr/lib/vst3)", false);
+
+    menu.addSeparator();
+    menu.addItem (1000, "Otra ubicación...");
+
+    menu.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (loadButton),
+                        [this, bundles] (int result)
+                        {
+                            if (result > 0 && result <= bundles.size())
+                                loadPlugin (bundles[result - 1]);
+                            else if (result == 1000)
+                                browseForPlugin();
+                        });
+}
+
+void MainComponent::browseForPlugin()
+{
+    chooser = std::make_unique<juce::FileChooser> ("Elegir plugin VST3 (la carpeta .vst3 o cualquier archivo dentro)",
+                                                   juce::File ("~"), "*");
+
     chooser->launchAsync (juce::FileBrowserComponent::openMode
                               | juce::FileBrowserComponent::canSelectFiles
                               | juce::FileBrowserComponent::canSelectDirectories,
                           [this] (const juce::FileChooser& fc)
                           {
                               if (fc.getResult() != juce::File())
-                                  loadPlugin (fc.getResult());
+                                  loadPlugin (enclosingVst3Bundle (fc.getResult()));
                           });
 }
 

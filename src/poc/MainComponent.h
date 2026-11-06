@@ -26,6 +26,7 @@ private:
     void selectDefaultJackDevices();
     void showAudioSettings();
     void choosePlugin();
+    void browseForPlugin();
     void loadPlugin (const juce::File& bundle);
     void showPluginEditor();
     void rebuildInputList();
