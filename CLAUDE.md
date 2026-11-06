@@ -8,7 +8,9 @@ presets con cadena de plugins VST3, snapshots, control MIDI. Ver `docs/PROPUESTA
 - SO: CachyOS (Arch). Paquetes con `pacman`; AUR disponible.
 - Interfaces de audio: Focusrite Scarlett Solo (principal, instrumento en entrada 2) y M-Audio M-Track 2x2M.
 - Audio: PipeWire (+ `pipewire-jack`). Objetivo < 10 ms ida y vuelta, buffer 64–128 @ 48 kHz.
-- VST3 del usuario en `~/.vst3`. TONE3000 es la versión Windows → vía yabridge (`~/.vst3/yabridge`).
+- VST3 del usuario en `~/.vst3`. TONE3000 instalado ahí es **nativo de Linux** (JUCE 9.0.1); yabridge
+  (`~/.vst3/yabridge`, aún no instalado) solo para plugins de Windows.
+- Otras entradas de audio presentes: micrófono USB C-Media (CM108) y audio interno; con JACK no deben ser el default.
 - Plugins propios del usuario: VST3 en su Mac, aún no portados a Linux (pendiente recompilar).
 - Hoy en PC de escritorio; a futuro mini‑PC táctil en vivo.
 
@@ -19,6 +21,11 @@ presets con cadena de plugins VST3, snapshots, control MIDI. Ver `docs/PROPUESTA
 - Escaneo de plugins fuera de proceso.
 - Presets en JSON; snapshots = delta de bypass + parámetros sobre el preset.
 
+## Compilar
+`cmake --preset release && cmake --build --preset release`; ejecutar con `scripts/run-poc.sh [buffer]`.
+JUCE 8.0.15 vía FetchContent (`LINUXRIG_JUCE_TAG`).
+
 ## Estado / siguiente paso
-Fase 0 (prueba de concepto): entrada de la interfaz → 1 VST3 → salida vía JACK/PipeWire,
-mostrando latencia y xruns. Validar primero con un VST3 nativo de Linux y luego con TONE3000 vía yabridge.
+Fase 0 (`src/poc/`, ver `docs/FASE0.md`): implementada y arrancando con TONE3000 a 128 @ 48 kHz,
+8 ms informados, 0 xruns. Pendiente: prueba de 30 min tocando, 64 muestras, ajustes RT del sistema,
+y un plugin de Windows vía yabridge. Luego Fase 1 (MVP).
